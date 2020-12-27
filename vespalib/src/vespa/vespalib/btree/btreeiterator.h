@@ -129,8 +129,13 @@ public:
     void
     adjustSteal(uint32_t stolen)
     {
+#pragma GCC diagnostic push
+#if !defined(__clang__) && defined(__GNUC__) && __GNUC__ == 11
+#pragma GCC diagnostic ignored "-Warray-bounds"
+#endif
         assert(_idx + stolen < _node->validSlots());
         _idx += stolen;
+#pragma GCC diagnostic pop
     }
 
     void
@@ -960,7 +965,12 @@ private:
         }
         if (stolen != 0) {
             if (level > 0) {
+#pragma GCC diagnostic push
+#if !defined(__clang__) && defined(__GNUC__) && __GNUC__ == 11
+#pragma GCC diagnostic ignored "-Warray-bounds"
+#endif
                 _path[level - 1].adjustSteal(stolen);
+#pragma GCC diagnostic pop
             } else {
                 _leaf.adjustSteal(stolen);
             }

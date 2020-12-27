@@ -70,7 +70,12 @@ MetricsTest::~MetricsTest() = default;
 
 void MetricsTest::SetUp() {
     _config = std::make_unique<vdstestlib::DirConfig>(getStandardConfig(true, "metricstest"));
+#pragma GCC diagnostic push
+#if !defined(__clang__) && defined(__GNUC__) && __GNUC__ == 11
+#pragma GCC diagnostic ignored "-Wstringop-overread"
+#endif
     assert(system(("rm -rf " + getRootFolder(*_config)).c_str()) == 0);
+#pragma GCC diagnostic pop
     try {
         _node = std::make_unique<TestServiceLayerApp>(NodeIndex(0), _config->getConfigId());
         _node->setupDummyPersistence();

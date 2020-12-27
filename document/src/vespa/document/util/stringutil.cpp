@@ -180,7 +180,7 @@ printAsHex(std::ostream& output, const void* source, unsigned int size,
     uint32_t posWidth = 1;
     for (uint32_t i=size; i>9; i /= 10) { ++posWidth; }
     std::vector<unsigned char> printables(columnwidth + 1);
-    printables[columnwidth] = '\0';
+    printables.back() = '\0';
     for (unsigned int i=0; i<size; i += columnwidth) {
         std::ostringstream ost;
         if (i != 0) ost << "\n" << indent;
